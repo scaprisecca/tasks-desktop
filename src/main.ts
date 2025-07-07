@@ -1,7 +1,8 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import path from 'path';
 import isDev from 'electron-is-dev';
 import Store from 'electron-store';
+import fs from 'fs';
 
 interface WindowState {
   isMaximized: boolean;
@@ -93,18 +94,68 @@ function createWindow() {
       event.returnValue = mainWindow.getBounds();
     }
   });
+
+  // Handle save backup request
+  ipcMain.handle('save-backup', async (_, { data, filename }) => {
+    try {
+      const { filePath } = await dialog.showSaveDialog({
+        title: 'Save Backup',
+        defaultPath: path.join(app.getPath('documents'), filename),
+        filters: [{ name: 'JSON Files', extensions: ['json'] }],
+      });
+
+      if (!filePath) {
+        return { success: false, error: 'Save cancelled' };
+      }
+
+      fs.writeFileSync(filePath, data, 'utf8');
+      return { success: true, filePath };
+    } catch (error) {
+      console.error('Error saving backup:', error);
+      return { success: false, error: (error as Error).message };
+    }
+  });
+
+  // Handle load backup request
+  ipcMain.handle('load-backup', async () => {
+    try {
+      const { filePaths } = await dialog.showOpenDialog({
+        title: 'Load Backup',
+        properties: ['openFile'],
+        filters: [{ name: 'JSON Files', extensions: ['json'] }],
+      });
+
+      if (!filePaths || filePaths.length === 0) {
+        return { success: false, error: 'Load cancelled' };
+      }
+
+      const filePath = filePaths[0];
+      const data = fs.readFileSync(filePath, 'utf8');
+      return { success: true, data };
+    } catch (error) {
+      console.error('Error loading backup:', error);
+      return { success: false, error: (error as Error).message };
+    }
+  });
 }
 
-app.whenReady().then(createWindow);
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+app.whenReady().then(() => {
+  createWindow();
 
+  app.on('activate', () => {
+    // On macOS it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
+    }
+  });
+});
+
+// Quit when all windows are closed, except on macOS.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
-  }
-});
-
-app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow();
   }
 }); 

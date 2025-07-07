@@ -68,12 +68,17 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           </nav>
         </aside>
 
-        {/* Content */}
-        <main className="flex-1 overflow-auto">
-          <div className="container mx-auto p-6">
-            {children}
-          </div>
+        {/* Center pane - TaskList */}
+        <main className="flex-1 overflow-hidden bg-background">
+          {children}
         </main>
+
+        {/* Right pane - Task detail (placeholder for future) */}
+        <aside className="w-80 border-l border-border bg-card hidden">
+          <div className="p-4">
+            {/* Task detail pane will go here */}
+          </div>
+        </aside>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "main": "src/main.tsx",
+  "main": "src/electron.cjs",
   "scripts": {
     "dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .\"",
     "build": "vite build",
@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "classnames": "^2.5.1",
+    "date-fns": "^4.1.0",
     "dexie": "^4.0.11",
     "electron-is-dev": "^3.0.1",
     "electron-store": "^10.0.1",

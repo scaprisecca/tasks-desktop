@@ -1,54 +1,126 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Testing the App
+Based on your `package.json`, here are the **exact commands** to test and run your application:
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### 1. **Install Dependencies**
+```bash
+npm install
+```
+or
+```bash
+pnpm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 2. **Start the App in Development Mode**
+This will:
+- Start the Vite dev server
+- Wait for it to be ready
+- Launch Electron in development mode
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm run dev
+```
+or
+```bash
+pnpm run dev
+```
+> This uses the script:  
+> `"dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .\""`
+
+---
+
+### 3. **Run Tests**
+To run all tests using Vitest:
+```bash
+npm test
+```
+or
+```bash
+pnpm test
+```
+To run tests with coverage:
+```bash
+npm run test:coverage
+```
+or
+```bash
+pnpm run test:coverage
+```
+
+---
+
+### 4. **Lint the Code**
+To check for linting errors:
+```bash
+npm run lint
+```
+or
+```bash
+pnpm run lint
+```
+
+---
+
+### 5. **Build for Production**
+To build the frontend for production:
+```bash
+npm run build
+```
+or
+```bash
+pnpm build
+```
+
+---
+
+### 6. **Preview the Production Build**
+To preview the production build locally:
+```bash
+npm run preview
+```
+or
+```bash
+pnpm preview
+```
+
+---
+
+### 7. **Build Electron App for Distribution**
+To package the Electron app for distribution (using electron-builder):
+```bash
+npm run electron:build
+```
+or
+```bash
+pnpm run electron:build
+```
+
+---
+
+## **Summary Table**
+
+| Action                | Command (npm)         | Command (pnpm)         |
+|-----------------------|-----------------------|------------------------|
+| Install dependencies  | `npm install`         | `pnpm install`         |
+| Start dev app         | `npm run dev`         | `pnpm run dev`         |
+| Run tests             | `npm test`            | `pnpm test`            |
+| Test coverage         | `npm run test:coverage` | `pnpm run test:coverage` |
+| Lint                  | `npm run lint`        | `pnpm run lint`        |
+| Build (frontend)      | `npm run build`       | `pnpm run build`       |
+| Preview build         | `npm run preview`     | `pnpm run preview`     |
+| Build Electron app    | `npm run electron:build` | `pnpm run electron:build` |
+
+---
+
+**To test out your application, just run:**
+```bash
+npm run dev
+```
+or
+```bash
+pnpm run dev
 ```

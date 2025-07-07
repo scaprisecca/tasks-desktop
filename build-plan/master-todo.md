@@ -8,8 +8,6 @@ A cross-platform, offline-first desktop task manager that syncs with CalDAV-comp
 - [x] Initialize Electron + React + TypeScript project
 - [x] Set up development environment and tooling
 - [x] Configure build system and packaging
-
-### In Progress Tasks
 - [x] Set up project structure and architecture
   - Created basic directory structure
   - Set up main Electron process
@@ -23,31 +21,59 @@ A cross-platform, offline-first desktop task manager that syncs with CalDAV-comp
   - Implemented window state persistence
   - Added window resize/move handlers
 
-### Future Tasks
+### In Progress Tasks
 - [ ] Set up testing infrastructure
+  - Basic test setup with Vitest
+  - Some store tests implemented
+  - Need to expand test coverage
+
+### Future Tasks
 - [ ] Configure CI/CD pipeline
 
 ## Phase 2: Data Layer and Storage
 
 ### Completed Tasks
-- [ ] Design database schema
-- [ ] Set up IndexedDB for local storage
+- [x] Design database schema
+  - Defined Task and TaskList interfaces
+  - Set up IndexedDB with Dexie
+  - Implemented basic CRUD operations
+- [x] Set up IndexedDB for local storage
+  - Created TasksDatabase class
+  - Implemented table structure
+  - Added service layer for data access
+- [x] Implement data migration system
+  - Created migration service with version tracking
+  - Added up/down migration support
+  - Implemented migration checks on app startup
+- [x] Set up backup/restore functionality
+  - Added backup service for data export/import
+  - Implemented automatic backup scheduling
+  - Created UI for manual backup/restore
 
 ### In Progress Tasks
-- [ ] Implement basic task data model
-- [ ] Create data access layer
+- [x] Implement basic task data model
+  - Created Task, TaskList, and TaskWithList interfaces
+  - Implemented task and list stores with Zustand
+  - Added persistence middleware
+- [x] Create data access layer
+  - Implemented taskService with CRUD operations
+  - Added list management functionality
+  - Set up error handling
 
 ### Future Tasks
-- [ ] Implement data migration system
-- [ ] Set up backup/restore functionality
+- [ ] Add analytics
+- [ ] Implement crash reporting
 
 ## Phase 3: Core Task Management
 
 ### Completed Tasks
-- [ ] Implement basic task CRUD operations
-- [ ] Create task list view component
+- [x] Implement basic task CRUD operations
+  - Create, read, update, delete tasks
+  - Task state management with Zustand
+  - Persistence of task data
 
 ### In Progress Tasks
+- [ ] Create task list view component
 - [ ] Add task detail view
 - [ ] Implement task filtering and sorting
 
@@ -89,8 +115,8 @@ A cross-platform, offline-first desktop task manager that syncs with CalDAV-comp
 ## Phase 6: Advanced Features
 
 ### Completed Tasks
-- [ ] Add tag management
-- [ ] Implement task priorities
+- [x] Add tag management
+- [x] Implement task priorities
 
 ### In Progress Tasks
 - [ ] Add reminders system
@@ -148,7 +174,15 @@ A cross-platform, offline-first desktop task manager that syncs with CalDAV-comp
 - `src/main.ts` - Electron main process
 - `src/renderer/App.tsx` - Main React application
 - `src/renderer/components/` - React components
+  - `BackupRestore.tsx` - Backup and restore UI component
 - `src/renderer/stores/` - Zustand stores
+  - `taskStore.ts` - Task state management
+  - `windowStore.ts` - Window state management
+  - `settingsStore.ts` - Settings and backup configuration
+- `src/renderer/services/` - Service layer
+  - `database.ts` - Database operations
+  - `migrationService.ts` - Database migration system
+  - `backupService.ts` - Backup and restore functionality
 - `src/renderer/db/` - Database layer
 - `src/renderer/sync/` - Sync implementation
 
@@ -156,4 +190,8 @@ A cross-platform, offline-first desktop task manager that syncs with CalDAV-comp
 - `package.json` - Dependencies and scripts
 - `vite.config.ts` - Build configuration
 - `tailwind.config.js` - Styling configuration
-- `electron-builder.yml` - Packaging configuration 
+- `electron-builder.yml` - Packaging configuration
+
+### Test Files
+- `tests/stores/taskStore.test.ts` - Task store tests
+- `tests/stores/windowStore.test.ts` - Window store tests 
