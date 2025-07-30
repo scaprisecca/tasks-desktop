@@ -8,6 +8,11 @@ type SortField = 'title' | 'dueDate' | 'priority' | 'status';
 type SortOrder = 'asc' | 'desc';
 type FilterStatus = 'all' | 'todo' | 'in-progress' | 'completed';
 
+interface TaskListProps {
+  onTaskSelect?: (taskId: number | null) => void;
+  selectedTaskId?: number | null;
+}
+
 const getPriorityColor = (priority: string) => {
   switch (priority) {
     case 'high':
@@ -34,7 +39,7 @@ const getStatusColor = (status: string) => {
   }
 };
 
-const TaskList: React.FC = () => {
+const TaskList: React.FC<TaskListProps> = ({ onTaskSelect, selectedTaskId }) => {
   const {
     tasks,
     lists,
@@ -93,6 +98,11 @@ const TaskList: React.FC = () => {
     }
   };
 
+  const handleTaskClick = (task: TaskWithList) => {
+    if (editingTask?.id === task.id) return; // Don't select if editing
+    onTaskSelect?.(task.id!);
+  };
+
   const filteredAndSortedTasks = useMemo(() => {
     let filtered = tasks.filter((task) => task.listId === selectedListId);
     
@@ -129,7 +139,8 @@ const TaskList: React.FC = () => {
   const handleKeyDown = (e: React.KeyboardEvent, task: TaskWithList) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      setEditingTask(task);
+      if (editingTask?.id === task.id) return;
+      onTaskSelect?.(task.id!);
     } else if (e.key === 'Delete' || e.key === 'Backspace') {
       e.preventDefault();
       handleDeleteTask(task.id!);
@@ -228,9 +239,14 @@ const TaskList: React.FC = () => {
               {filteredAndSortedTasks.map((task) => (
                 <div
                   key={task.id}
-                  className="p-4 border rounded-lg hover:bg-gray-50 transition-colors duration-200"
+                  className={`p-4 border rounded-lg cursor-pointer transition-colors duration-200 ${
+                    selectedTaskId === task.id
+                      ? 'border-blue-500 bg-blue-50'
+                      : 'hover:bg-gray-50'
+                  }`}
                   role="listitem"
                   tabIndex={0}
+                  onClick={() => handleTaskClick(task)}
                   onKeyDown={(e) => handleKeyDown(e, task)}
                   aria-label={`Task: ${task.title}, Priority: ${task.priority}, Status: ${task.status}`}
                 >
